@@ -13,15 +13,20 @@ db = SQLAlchemy(app )
 
 #Tugas #1. Membuat tabel DB
 
+class Card(db.Model):
+    # Membuat kolom
+    # id
+    id = db.Column(db.Integer, primary_key=True)
+    # Judul
+    title = db.Column(db.String(100), nullable=False)
+    # Deskripsi
+    subtitle = db.Column(db.String(300), nullable=False)
+    # Teks
+    text = db.Column(db.Text, nullable=False)
 
-
-
-
-
-
-
-
-
+    # Menghasilkan objek dan id-nya
+    def _repr_(self):
+        return f'<Card {self.id}>'
 
 # Menjalankan halaman dengan konten
 @app.route('/')
@@ -57,10 +62,9 @@ def form_create():
         text =  request.form['text']
 
         # Tugas #2. Buatlah cara untuk menyimpan data dalam DB
-        
-
-
-
+        card = Card(title=title, subtitle=subtitle, text=text)
+        db.session.add(card)
+        db.session.commit()
 
         return redirect('/')
     else:
